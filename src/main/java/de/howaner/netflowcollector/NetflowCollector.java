@@ -81,7 +81,7 @@ public class NetflowCollector {
 				? new EpollEventLoopGroup(2, new ThreadFactoryBuilder().setNameFormat("Netty #%d").setDaemon(true).build())
 				: new NioEventLoopGroup(2, new ThreadFactoryBuilder().setNameFormat("Netty #%d").setDaemon(true).build());
 
-		this.logger.info("Start http server at 0.0.0.0:9876 ...");
+		this.logger.info("Start udp server at {}:{} ...", this.config.getBindingHost(), this.config.getBindingPort());
 		try {
 			Bootstrap bootstrap = new Bootstrap()
 					.group(this.eventLoop)
@@ -96,7 +96,7 @@ public class NetflowCollector {
 						}
 					});
 			
-			bootstrap.bind(InetAddress.getByName("0.0.0.0"), 9876).sync().channel().closeFuture().await();
+			bootstrap.bind(InetAddress.getByName(this.config.getBindingHost()), this.config.getBindingPort()).sync().channel().closeFuture().await();
 		} catch (UnknownHostException | InterruptedException ex) {
 			ex.printStackTrace();
 		}

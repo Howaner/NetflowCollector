@@ -25,6 +25,9 @@ import java.util.Set;
 import lombok.Getter;
 
 public class NetflowCollectorConfig {
+	@Getter private String bindingHost;
+	@Getter private int bindingPort;
+
 	@Getter private CollectionAdapter collectionAdapter;
 	@Getter private Set<String> collectionIndexes;
 	@Getter private int cacheSize;
@@ -55,6 +58,12 @@ public class NetflowCollectorConfig {
 		this.rawConfig = gson.fromJson(fileContent, type);
 
 		try {
+			this.parseBindingConfig();
+		} catch (Exception ex) {
+			throw new ConfigException("Error while reading Binding Config", ex);
+		}
+
+		try {
 			this.parseCollectionConfig();
 		} catch (Exception ex) {
 			throw new ConfigException("Error while reading Collection Config", ex);
@@ -71,6 +80,12 @@ public class NetflowCollectorConfig {
 		} catch (Exception ex) {
 			throw new ConfigException("Error while reading Database Config", ex);
 		}
+	}
+
+	private void parseBindingConfig() throws ConfigException {
+		Map<String, Object> bindingConfig = (Map<String, Object>) this.rawConfig.getOrDefault("Binding", Collections.EMPTY_MAP);
+		this.bindingHost = (String) bindingConfig.get("Host");
+		this.bindingPort = ((Double) bindingConfig.get("Port")).intValue();
 	}
 
 	private void parseCollectionConfig() throws ConfigException {
