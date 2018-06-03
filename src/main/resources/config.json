@@ -1,0 +1,28 @@
+{
+	"Collection": {
+		"Adapter": "SingleCollection",
+		"CollectionName": "Flows",
+		"Indexes": [
+			"L4_SRC_PORT",
+			"L4_DST_PORT",
+			"IPV4_SRC_ADDR",
+			"IPV4_DST_ADDR",
+			"PROTOCOL",
+			"INPUT_INTERFACE",
+			"OUTPUT_INTERFACE",
+			"DIRECTION"
+		]
+	},
+	"Cache": {
+		"Size": 100,
+		"Timeout": 300
+	},
+	"Database": {
+		"Type": "MongoDB",
+		"IP": "localhost",
+		"Port": 27017,
+		"User": "netflowcollector",
+		"Password": "netflowcollector",
+		"Database": "netflowcollector"
+	}
+}
